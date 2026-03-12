@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创伤骨科围术期VTE风险计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'SimHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .unit {
+            color: #888;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: none;
+            animation: slideUp 0.5s ease-in;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .result-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .probability {
+            font-size: 32px;
+            font-weight: 800;
+            text-align: center;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .risk-low {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .risk-medium {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .risk-high {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+
+        .recommendation {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 10px;
+        }
+
+        .recommendation-title {
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .recommendation-text {
+            color: #856404;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .formula-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .formula-title {
+            font-weight: 700;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .formula {
+            color: #6c757d;
+            line-height: 1.8;
+            font-family: 'Courier New', monospace;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #856404;
+            line-height: 1.6;
+        }
+
+        .note {
+            color: #999;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .reference {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e7f3ff;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #004085;
+            line-height: 1.6;
+        }
+
+        .reference-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>创伤骨科围术期VTE风险计算器</h1>
+        <p class="subtitle">基于Caprini评分与血栓标志物的综合预测模型</p>
+
+        <div class="input-group">
+            <label for="caprini">Caprini评分 <span class="unit">(分)</span></label>
+            <input type="number" id="caprini" min="2" max="15" step="1" placeholder="请输入Caprini评分">
+        </div>
+
+        <div class="input-group">
+            <label for="tat">TAT <span class="unit">(μg/L)</span></label>
+            <input type="number" id="tat" min="0" step="0.1" placeholder="请输入TAT值">
+        </div>
+
+        <div class="input-group">
+            <label for="pic">PIC <span class="unit">(μg/L)</span></label>
+            <input type="number" id="pic" min="0" step="0.1" placeholder="请输入PIC值">
+        </div>
+
+        <div class="input-group">
+            <label for="tm">TM <span class="unit">(TU/mL)</span></label>
+            <input type="number" id="tm" min="0" step="0.1" placeholder="请输入TM值">
+        </div>
+
+        <button onclick="calculate()">计算VTE风险</button>
+
+        <div class="result" id="result">
+            <div class="result-item">
+                <div class="result-label">CFI值</div>
+                <div class="result-value" id="cfi">--</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">CFI状态</div>
+                <div class="result-value" id="cfi_status">--</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">Caprini贡献值</div>
+                <div class="result-value" id="caprini_points">--</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">CFI截断贡献值</div>
+                <div class="result-value" id="cfi_points">--</div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">总分</div>
+                <div class="result-value" id="total_points">--</div>
+            </div>
+
+            <div class="probability" id="probability">--%</div>
+
+            <div style="text-align: center;">
+                <div class="risk-badge" id="risk_badge">--</div>
+            </div>
+
+            <div class="recommendation">
+                <div class="recommendation-title">💡 临床建议</div>
+                <div class="recommendation-text" id="recommendation">--</div>
+            </div>
+
+            <div class="formula-section">
+                <div class="formula-title">📊 计算公式</div>
+                <div class="formula" id="formula">--</div>
+            </div>
+
+            <div class="reference">
+                <div class="reference-title">📚 风险等级说明</div>
+                <div>
+                    • <strong>低风险 (&lt;20%)</strong>: 基础预防 + 监测<br>
+                    • <strong>中风险 (20-30%)</strong>: 考虑药物预防<br>
+                    • <strong>高风险 (&gt;30%)</strong>: 积极药物预防
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                ⚠️ <strong>免责声明</strong>: 本计算器仅供参考,不能替代专业医疗建议。临床决策应结合患者的具体情况和医生的判断。
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模型参数
+        const modelParams = {
+            intercept: -1.8357,
+            caprini_coef: 0.4913,
+            cfi_cutoff_coef: 1.0652,
+            caprini_mean: 6.49,
+            caprini_std: 2.87,
+            cfi_threshold: 25.68,
+            cfi_formula: "TAT + PIC + TM"
+        };
+
+        function calculate() {
+            // 获取输入值
+            const caprini = parseFloat(document.getElementById('caprini').value);
+            const tat = parseFloat(document.getElementById('tat').value);
+            const pic = parseFloat(document.getElementById('pic').value);
+            const tm = parseFloat(document.getElementById('tm').value);
+
+            // 验证输入
+            if (isNaN(caprini) || isNaN(tat) || isNaN(pic) || isNaN(tm)) {
+                alert('请输入所有参数!');
+                return;
+            }
+
+            if (caprini < 2 || caprini > 15) {
+                alert('Caprini评分应在2-15分之间!');
+                return;
+            }
+
+            // 计算CFI
+            const cfi = tat + pic + tm;
+
+            // 判断CFI截断
+            const cfi_cutoff = cfi > modelParams.cfi_threshold ? 1 : 0;
+
+            // 计算Caprini贡献值
+            const caprini_points = (caprini - modelParams.caprini_mean) / modelParams.caprini_std * modelParams.caprini_coef;
+
+            // 计算CFI截断贡献值
+            const cfi_points = cfi_cutoff * modelParams.cfi_cutoff_coef;
+
+            // 计算总分
+            const total_points = caprini_points + cfi_points;
+
+            // 计算预测概率
+            const probability = 1 / (1 + Math.exp(-(modelParams.intercept + total_points)));
+
+            // 判断风险等级
+            let risk_level, risk_class, recommendation_text;
+            if (probability < 0.20) {
+                risk_level = "低风险";
+                risk_class = "risk-low";
+                recommendation_text = "建议进行基础预防措施:包括早期下床活动、使用弹力袜、间歇充气加压装置等机械预防方法。定期监测凝血功能指标,评估VTE风险变化。";
+            } else if (probability < 0.30) {
+                risk_level = "中风险";
+                risk_class = "risk-medium";
+                recommendation_text = "建议在基础预防的基础上,考虑药物预防。评估出血风险,权衡预防治疗的获益与风险。可使用低分子肝素等抗凝药物,密切监测出血情况。";
+            } else {
+                risk_level = "高风险";
+                risk_class = "risk-high";
+                recommendation_text = "强烈建议积极药物预防!立即评估出血风险,若无禁忌,应立即启动抗凝治疗(如低分子肝素)。实施多模式预防措施:机械预防+药物预防。密切监测凝血功能,定期评估VTE风险。";
+            }
+
+            // 显示结果
+            document.getElementById('cfi').textContent = `${cfi.toFixed(2)}`;
+            document.getElementById('cfi_status').textContent = cfi > modelParams.cfi_threshold ? 
+                `CFI > ${modelParams.cfi_threshold.toFixed(2)} (高)` : 
+                `CFI ≤ ${modelParams.cfi_threshold.toFixed(2)} (低)`;
+            
+            document.getElementById('caprini_points').textContent = caprini_points.toFixed(4);
+            document.getElementById('cfi_points').textContent = cfi_points.toFixed(4);
+            document.getElementById('total_points').textContent = total_points.toFixed(4);
+            document.getElementById('probability').textContent = `${(probability * 100).toFixed(2)}%`;
+            
+            const risk_badge = document.getElementById('risk_badge');
+            risk_badge.textContent = risk_level;
+            risk_badge.className = 'risk-badge ' + risk_class;
+            
+            document.getElementById('recommendation').textContent = recommendation_text;
+
+            // 显示公式
+            const formula_text = 
+                `① CFI = TAT + PIC + TM = ${tat.toFixed(2)} + ${pic.toFixed(2)} + ${tm.toFixed(2)} = ${cfi.toFixed(2)}\n` +
+                `② CFI状态: ${cfi > modelParams.cfi_threshold ? '>' : '≤'} ${modelParams.cfi_threshold.toFixed(2)}\n` +
+                `③ Caprini贡献值 = (${caprini} - ${modelParams.caprini_mean.toFixed(2)}) ÷ ${modelParams.caprini_std.toFixed(2)} × ${modelParams.caprini_coef.toFixed(4)} = ${caprini_points.toFixed(4)}\n` +
+                `④ CFI截断贡献值 = ${cfi_cutoff} × ${modelParams.cfi_cutoff_coef.toFixed(4)} = ${cfi_points.toFixed(4)}\n` +
+                `⑤ 总分 = ${caprini_points.toFixed(4)} + ${cfi_points.toFixed(4)} = ${total_points.toFixed(4)}\n` +
+                `⑥ 预测概率 = 1 ÷ [1 + e^(${modelParams.intercept.toFixed(4)} + ${total_points.toFixed(4)})] = ${(probability * 100).toFixed(2)}%`;
+            
+            document.getElementById('formula').textContent = formula_text;
+
+            // 显示结果区域
+            document.getElementById('result').style.display = 'block';
+
+            // 滚动到结果区域
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 允许按Enter键计算
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculate();
+            }
+        });
+    </script>
+</body>
+</html>

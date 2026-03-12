@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创伤骨科围术期VTE风险计算器</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .main-button {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+        .main-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        .button-icon {
+            font-size: 2.5em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .info-section {
+            margin: 40px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        .info-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .quick-start {
+            background: #e8f4fc;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        .disclaimer {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ffc107;
+            margin: 30px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 20px auto;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>创伤骨科围术期VTE风险计算器</h1>
+        <p class="subtitle">基于Caprini评分与血栓标志物的综合预测模型</p>
+        
+        <a href="创伤骨科围术期VTE风险计算器.html" class="main-button">
+            <span class="button-icon">🧮</span>
+            <span>立即使用VTE风险计算器</span>
+            <small style="display:block; opacity:0.9; font-weight:normal; margin-top:5px;">专业医疗辅助工具，免费使用</small>
+        </a>
+        
+        <div class="info-section">
+            <h2>💡 工具简介</h2>
+            <p>这是一个专业的医疗辅助工具，用于评估创伤骨科患者围手术期的VTE（静脉血栓栓塞症）风险。结合Caprini评分与血栓标志物（TAT、PIC、TM）提供精准预测。</p>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">⚕️</div>
+                    <h3>临床实用</h3>
+                    <p>基于临床研究数据</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h3>精准评估</h3>
+                    <p>综合评分模型</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <h3>响应式设计</h3>
+                    <p>多设备支持</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔬</div>
+                    <h3>透明计算</h3>
+                    <p>完整公式展示</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-start">
+            <h2>🚀 快速开始</h2>
+            <ol>
+                <li><strong>输入Caprini评分</strong>（2-15分）</li>
+                <li><strong>输入血栓标志物</strong>：TAT、PIC、TM值</li>
+                <li><strong>点击计算</strong>查看风险评估结果</li>
+                <li><strong>参考临床建议</strong>制定预防策略</li>
+            </ol>
+        </div>
+        
+        <div class="disclaimer">
+            <h3>⚠️ 免责声明</h3>
+            <p>本计算器为医疗辅助工具，计算结果仅供参考，不能替代专业医疗诊断和治疗建议。临床决策应结合患者的具体情况和医生的专业判断。</p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 创伤骨科围术期VTE风险计算器 | 版本 1.0.0</p>
+            <p>部署于 GitHub Pages | 最后更新: 2026年3月12日</p>
+        </div>
+    </div>
+</body>
+</html>
