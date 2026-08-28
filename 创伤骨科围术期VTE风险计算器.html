@@ -320,9 +320,10 @@
             <div class="reference">
                 <div class="reference-title">📚 风险等级说明</div>
                 <div>
-                    • <strong>低风险 (&lt;20%)</strong>: 基础预防 + 监测<br>
-                    • <strong>中风险 (20-30%)</strong>: 考虑药物预防<br>
-                    • <strong>高风险 (&gt;30%)</strong>: 积极药物预防
+                    • <strong>低风险 (&lt;20%)</strong>: 本模型预测的 VTE 风险概率较低<br>
+                    • <strong>中风险 (20-30%)</strong>: 中等预测风险<br>
+                    • <strong>高风险 (&gt;30%)</strong>: 较高预测风险<br>
+                    <span style="font-size:11px;color:#666">* 上述切点系参考常用临床分层阈值，本研究未验证其与最佳预防策略的对应关系 *</span>
                 </div>
             </div>
 
@@ -384,15 +385,15 @@
             if (probability < 0.20) {
                 risk_level = "低风险";
                 risk_class = "risk-low";
-                recommendation_text = "建议进行基础预防措施:包括早期下床活动、使用弹力袜、间歇充气加压装置等机械预防方法。定期监测凝血功能指标,评估VTE风险变化。";
+                recommendation_text = "本结果为预测的 VTE 风险概率。是否需要加强机械预防、启动或调整药物预防，应由临床医生结合患者出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。";
             } else if (probability < 0.30) {
                 risk_level = "中风险";
                 risk_class = "risk-medium";
-                recommendation_text = "建议在基础预防的基础上,考虑药物预防。评估出血风险,权衡预防治疗的获益与风险。可使用低分子肝素等抗凝药物,密切监测出血情况。";
+                recommendation_text = "本结果提示预测的 VTE 风险处于中等水平。是否需要加强机械预防或启动药物预防，应由临床医生结合出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。";
             } else {
                 risk_level = "高风险";
                 risk_class = "risk-high";
-                recommendation_text = "强烈建议积极药物预防!立即评估出血风险,若无禁忌,应立即启动抗凝治疗(如低分子肝素)。实施多模式预防措施:机械预防+药物预防。密切监测凝血功能,定期评估VTE风险。";
+                recommendation_text = "本结果提示预测的 VTE 风险较高。是否需要加强机械预防与药物预防的联合应用，应由临床医生结合出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。";
             }
 
             // 显示结果
