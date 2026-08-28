@@ -73,7 +73,7 @@
                 <span class="zh">Caprini 评分</span>
                 <span class="unit">(<span class="en">points</span><span class="zh">分</span>)</span>
             </label>
-            <input type="number" id="caprini" min="2" max="15" step="1" placeholder="Caprini score">
+            <input type="number" id="caprini" min="0" max="20" step="1" placeholder="Caprini score">
         </div>
 
         <div class="input-group">
@@ -197,7 +197,7 @@
 
         const i18n = {
             errorMissing: { en: 'Please fill in all fields!', zh: '请输入所有参数!' },
-            errorRange:  { en: 'Caprini score should be between 2 and 15!', zh: 'Caprini 评分应在 2-15 分之间!' },
+            errorRange:  { en: 'Caprini score should be between 0 and 20!', zh: 'Caprini 评分应在 0-20 分之间!' },
             recLow: { en: 'This result is the predicted VTE risk probability. Whether to intensify mechanical prophylaxis or initiate/adjust pharmacological prophylaxis should be determined by the clinician based on the patient\'s bleeding risk, comorbidities, surgical type, and renal function. Please discuss this result with your doctor.', zh: '本结果为预测的 VTE 风险概率。是否需要加强机械预防、启动或调整药物预防，应由临床医生结合患者出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。' },
             recMid: { en: 'This result indicates a moderate predicted VTE risk. Whether to intensify mechanical prophylaxis or initiate pharmacological prophylaxis should be determined by the clinician based on bleeding risk, comorbidities, surgical type, and renal function. Please discuss this result with your doctor.', zh: '本结果提示预测的 VTE 风险处于中等水平。是否需要加强机械预防或启动药物预防，应由临床医生结合出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。' },
             recHigh: { en: 'This result indicates a high predicted VTE risk. Whether to combine intensified mechanical and pharmacological prophylaxis should be determined by the clinician based on bleeding risk, comorbidities, surgical type, and renal function. Please discuss this result with your doctor.', zh: '本结果提示预测的 VTE 风险较高。是否需要加强机械预防与药物预防的联合应用，应由临床医生结合出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。' },
@@ -213,7 +213,7 @@
             const lang = document.body.classList.contains('lang-zh') ? 'zh' : 'en';
 
             if (isNaN(caprini) || isNaN(tat) || isNaN(tm)) { alert(i18n.errorMissing[lang]); return; }
-            if (caprini < 2 || caprini > 15) { alert(i18n.errorRange[lang]); return; }
+            if (caprini < 0 || caprini > 20) { alert(i18n.errorRange[lang]); return; }
 
             const tci = tat + tm;
             const tci_cutoff = tci > modelParams.tci_threshold ? 1 : 0;
