@@ -1,175 +1,264 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>创伤骨科围术期VTE风险计算器</title>
+    <title>Trauma Orthopedic Perioperative DVT Risk Calculator</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'SimHei', 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            color: #333;
+            min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;
         }
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-        }
-        .main-button {
-            display: block;
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 20px;
-            font-weight: bold;
-            margin: 30px 0;
-            transition: all 0.3s ease;
-        }
-        .main-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-        .button-icon {
-            font-size: 2.5em;
-            display: block;
-            margin-bottom: 10px;
-        }
-        .info-section {
-            margin: 40px 0;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 15px;
-        }
-        .info-section h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-        }
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .feature-item {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
-        .feature-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        .quick-start {
-            background: #e8f4fc;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 30px 0;
-        }
-        .disclaimer {
-            background: #fff3cd;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #ffc107;
-            margin: 30px 0;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            color: #7f8c8d;
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-                margin: 20px auto;
-            }
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        .container { background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 600px; width: 100%; padding: 40px; animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        h1 { text-align: center; color: #333; margin-bottom: 10px; font-size: 28px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 14px; }
+        /* 中英文切换 */
+        .lang-toggle { text-align: right; margin-bottom: 10px; }
+        .lang-toggle button { background: #f0f0f0; color: #333; border: 1px solid #ccc; border-radius: 6px; padding: 4px 12px; font-size: 12px; cursor: pointer; margin-left: 4px; }
+        .lang-toggle button.active { background: #667eea; color: white; border-color: #667eea; }
+        body.lang-en .zh { display: none; }
+        body.lang-zh .en { display: none; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #555; font-weight: 600; font-size: 15px; }
+        input[type="number"] { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; transition: all 0.3s ease; background: #f8f9fa; }
+        input[type="number"]:focus { outline: none; border-color: #667eea; background: white; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
+        .unit { color: #888; font-size: 14px; margin-left: 5px; }
+        button.calc-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 10px; }
+        button.calc-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
+        button.calc-btn:active { transform: translateY(0); }
+        .result { margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 15px; display: none; animation: slideUp 0.5s ease-in; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .result-item { margin-bottom: 12px; padding: 10px 12px; background: white; border-radius: 10px; border-left: 4px solid #667eea; }
+        .result-label { font-weight: 600; color: #666; margin-bottom: 4px; font-size: 14px; }
+        .result-value { font-size: 18px; font-weight: 700; color: #333; }
+        .probability { font-size: 32px; font-weight: 800; text-align: center; margin: 20px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .risk-badge { display: inline-block; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 18px; text-align: center; margin: 15px 0; }
+        .risk-low { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+        .risk-medium { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .risk-high { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); color: white; }
+        .recommendation { margin-top: 16px; padding: 14px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 10px; }
+        .recommendation-title { font-weight: 700; color: #856404; margin-bottom: 8px; font-size: 16px; }
+        .recommendation-text { color: #856404; line-height: 1.6; font-size: 14px; }
+        .formula-section { margin-top: 20px; padding: 16px; background: #e9ecef; border-radius: 10px; font-size: 13px; }
+        .formula-title { font-weight: 700; color: #495057; margin-bottom: 10px; }
+        .formula-line { color: #495057; line-height: 1.9; font-family: 'Courier New', monospace; padding: 2px 0; }
+        .disclaimer { margin-top: 18px; padding: 14px; background: #fff3cd; border-radius: 10px; font-size: 12px; color: #856404; line-height: 1.6; }
+        .reference { margin-top: 16px; padding: 14px; background: #e7f3ff; border-radius: 10px; font-size: 12px; color: #004085; line-height: 1.7; }
+        .reference-title { font-weight: 700; margin-bottom: 8px; }
+        .ref-note { font-size: 11px; color: #666; font-style: italic; }
     </style>
 </head>
-<body>
+<body class="lang-en">
     <div class="container">
-        <h1>创伤骨科围术期VTE风险计算器</h1>
-        <p class="subtitle">基于Caprini评分与血栓标志物的综合预测模型</p>
-        
-        <a href="创伤骨科围术期VTE风险计算器.html" class="main-button">
-            <span class="button-icon">🧮</span>
-            <span>立即使用VTE风险计算器</span>
-            <small style="display:block; opacity:0.9; font-weight:normal; margin-top:5px;">专业医疗辅助工具，免费使用</small>
-        </a>
-        
-        <div class="info-section">
-            <h2>💡 工具简介</h2>
-            <p>这是一个专业的医疗辅助工具，用于评估创伤骨科患者围手术期的VTE（静脉血栓栓塞症）风险。结合Caprini评分与血栓标志物（TAT、PIC、TM）提供精准预测。</p>
-            
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">⚕️</div>
-                    <h3>临床实用</h3>
-                    <p>基于临床研究数据</p>
+        <div class="lang-toggle">
+            <button id="btn-en" class="active" onclick="setLang('en')">English</button>
+            <button id="btn-zh" onclick="setLang('zh')">中文</button>
+        </div>
+
+        <h1>
+            <span class="en">Trauma Orthopedic Perioperative DVT Risk Calculator</span>
+            <span class="zh">创伤骨科围术期DVT风险计算器</span>
+        </h1>
+        <p class="subtitle">
+            <span class="en">Combined Caprini score &amp; TCI (TAT + TM) — prospective cohort with temporal validation</span>
+            <span class="zh">联合 Caprini 评分与 TCI（TAT + TM）——前瞻性队列时间验证</span>
+        </p>
+
+        <div class="input-group">
+            <label for="caprini">
+                <span class="en">Caprini score</span>
+                <span class="zh">Caprini 评分</span>
+                <span class="unit">(<span class="en">points</span><span class="zh">分</span>)</span>
+            </label>
+            <input type="number" id="caprini" min="0" max="20" step="1" placeholder="Caprini score">
+        </div>
+
+        <div class="input-group">
+            <label for="tat">
+                <span class="en">TAT (thrombin–antithrombin complex)</span>
+                <span class="zh">TAT（凝血酶-抗凝血酶复合物）</span>
+                <span class="unit">(μg/L)</span>
+            </label>
+            <input type="number" id="tat" min="0" step="0.1" placeholder="TAT value">
+        </div>
+
+        <div class="input-group">
+            <label for="tm">
+                <span class="en">TM (thrombomodulin)</span>
+                <span class="zh">TM（血栓调节蛋白）</span>
+                <span class="unit">(TU/mL)</span>
+            </label>
+            <input type="number" id="tm" min="0" step="0.1" placeholder="TM value">
+        </div>
+
+        <button class="calc-btn" onclick="calculate()">
+            <span class="en">Calculate DVT risk</span>
+            <span class="zh">计算 DVT 风险</span>
+        </button>
+
+        <div class="result" id="result">
+            <div class="result-item">
+                <div class="result-label">
+                    <span class="en">TCI value</span><span class="zh">TCI 值</span>
                 </div>
-                <div class="feature-item">
-                    <div class="feature-icon">📊</div>
-                    <h3>精准评估</h3>
-                    <p>综合评分模型</p>
+                <div class="result-value" id="tci">--</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">
+                    <span class="en">TCI status</span><span class="zh">TCI 状态</span>
                 </div>
-                <div class="feature-item">
-                    <div class="feature-icon">📱</div>
-                    <h3>响应式设计</h3>
-                    <p>多设备支持</p>
+                <div class="result-value" id="tci_status">--</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">
+                    <span class="en">Caprini contribution</span><span class="zh">Caprini 贡献值</span>
                 </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔬</div>
-                    <h3>透明计算</h3>
-                    <p>完整公式展示</p>
+                <div class="result-value" id="caprini_points">--</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">
+                    <span class="en">TCI contribution</span><span class="zh">TCI 贡献值</span>
+                </div>
+                <div class="result-value" id="tci_points">--</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">
+                    <span class="en">Total score</span><span class="zh">总分</span>
+                </div>
+                <div class="result-value" id="total_points">--</div>
+            </div>
+            <div class="probability" id="probability">--%</div>
+            <div style="text-align: center;">
+                <div class="risk-badge" id="risk_badge">--</div>
+            </div>
+            <div class="recommendation">
+                <div class="recommendation-title">
+                    <span class="en">💡 Interpretation</span><span class="zh">💡 解读</span>
+                </div>
+                <div class="recommendation-text" id="recommendation">--</div>
+            </div>
+            <div class="formula-section">
+                <div class="formula-title">
+                    <span class="en">📊 Calculation formula</span><span class="zh">📊 计算公式</span>
+                </div>
+                <div id="formula">--</div>
+            </div>
+            <div class="reference">
+                <div class="reference-title">
+                    <span class="en">📚 Risk-tier reference</span><span class="zh">📚 风险等级参考</span>
+                </div>
+                <div>
+                    <span class="en">•</span><span class="zh">•</span>
+                    <strong><span class="en">Low</span><span class="zh">低风险</span></strong>
+                    &lt;20% · <span class="en">predicted DVT risk is low</span><span class="zh">模型预测的 DVT 风险概率较低</span><br>
+                    <span class="en">•</span><span class="zh">•</span>
+                    <strong><span class="en">Intermediate</span><span class="zh">中风险</span></strong>
+                    20–30% · <span class="en">predicted risk is intermediate</span><span class="zh">中等预测风险</span><br>
+                    <span class="en">•</span><span class="zh">•</span>
+                    <strong><span class="en">High</span><span class="zh">高风险</span></strong>
+                    &gt;30% · <span class="en">predicted risk is high</span><span class="zh">较高预测风险</span><br>
+                    <span class="ref-note">* <span class="en">These cut-offs were adopted from commonly used clinical stratification thresholds and have not been prospectively validated in this study as optimal triggers for prophylactic strategies.</span><span class="zh">上述切点系参考常用临床分层阈值，本研究未验证其与最佳预防策略的对应关系。</span></span>
                 </div>
             </div>
-        </div>
-        
-        <div class="quick-start">
-            <h2>🚀 快速开始</h2>
-            <ol>
-                <li><strong>输入Caprini评分</strong>（2-15分）</li>
-                <li><strong>输入血栓标志物</strong>：TAT、PIC、TM值</li>
-                <li><strong>点击计算</strong>查看风险评估结果</li>
-                <li><strong>参考临床建议</strong>制定预防策略</li>
-            </ol>
-        </div>
-        
-        <div class="disclaimer">
-            <h3>⚠️ 免责声明</h3>
-            <p>本计算器为医疗辅助工具，计算结果仅供参考，不能替代专业医疗诊断和治疗建议。临床决策应结合患者的具体情况和医生的专业判断。</p>
-        </div>
-        
-        <div class="footer">
-            <p>© 2026 创伤骨科围术期VTE风险计算器 | 版本 1.0.0</p>
-            <p>部署于 GitHub Pages | 最后更新: 2026年3月12日</p>
+            <div class="disclaimer">
+                ⚠️ <strong><span class="en">Disclaimer</span><span class="zh">免责声明</span></strong>:
+                <span class="en">This calculator is for reference only and does not replace professional medical advice. The decision to initiate or intensify pharmacological prophylaxis should be made by the clinician based on individual bleeding risk, comorbidities, surgical type, and renal function.</span>
+                <span class="zh">本计算器仅供参考，不能替代专业医疗建议。是否启动或加强药物预防，应由临床医生结合患者出血风险、合并症、手术类型、肾功能等因素综合判断。</span>
+            </div>
         </div>
     </div>
+
+    <script>
+        // 默认英文（body 已有 class="lang-en"）
+        function setLang(lang) {
+            document.body.classList.remove('lang-en', 'lang-zh');
+            document.body.classList.add('lang-' + lang);
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+        }
+        // 也支持 URL 参数 ?lang=zh
+        (function(){
+            const p = new URLSearchParams(location.search).get('lang');
+            if (p === 'zh' || p === 'en') setLang(p);
+        })();
+
+        const modelParams = {
+            intercept: -2.0627,
+            caprini_coef: 0.6156,
+            tci_cutoff_coef: 1.2461,
+            caprini_mean: 6.49,
+            caprini_std: 2.87,
+            tci_threshold: 24.23,
+            tci_formula: "TAT + TM"
+        };
+
+        const i18n = {
+            errorMissing: { en: 'Please fill in all fields!', zh: '请输入所有参数!' },
+            errorRange:  { en: 'Caprini score should be between 0 and 20!', zh: 'Caprini 评分应在 0-20 分之间!' },
+            recLow: { en: 'This result is the predicted DVT risk probability. Whether to intensify mechanical prophylaxis or initiate/adjust pharmacological prophylaxis should be determined by the clinician based on the patient\'s bleeding risk, comorbidities, surgical type, and renal function. Please discuss this result with your doctor.', zh: '本结果为预测的 DVT 风险概率。是否需要加强机械预防、启动或调整药物预防，应由临床医生结合患者出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。' },
+            recMid: { en: 'This result indicates a moderate predicted DVT risk. Whether to intensify mechanical prophylaxis or initiate pharmacological prophylaxis should be determined by the clinician based on bleeding risk, comorbidities, surgical type, and renal function. Please discuss this result with your doctor.', zh: '本结果提示预测的 DVT 风险处于中等水平。是否需要加强机械预防或启动药物预防，应由临床医生结合出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。' },
+            recHigh: { en: 'This result indicates a high predicted DVT risk. Whether to combine intensified mechanical and pharmacological prophylaxis should be determined by the clinician based on bleeding risk, comorbidities, surgical type, and renal function. Please discuss this result with your doctor.', zh: '本结果提示预测的 DVT 风险较高。是否需要加强机械预防与药物预防的联合应用，应由临床医生结合出血风险、合并症、手术类型、肾功能等因素综合判断。请将此结果与医生讨论。' },
+            riskLow: { en: 'Low risk', zh: '低风险' },
+            riskMid: { en: 'Intermediate risk', zh: '中风险' },
+            riskHigh: { en: 'High risk', zh: '高风险' }
+        };
+
+        function calculate() {
+            const caprini = parseFloat(document.getElementById('caprini').value);
+            const tat = parseFloat(document.getElementById('tat').value);
+            const tm = parseFloat(document.getElementById('tm').value);
+            const lang = document.body.classList.contains('lang-zh') ? 'zh' : 'en';
+
+            if (isNaN(caprini) || isNaN(tat) || isNaN(tm)) { alert(i18n.errorMissing[lang]); return; }
+            if (caprini < 0 || caprini > 20) { alert(i18n.errorRange[lang]); return; }
+
+            const tci = tat + tm;
+            const tci_cutoff = tci > modelParams.tci_threshold ? 1 : 0;
+            const caprini_points = (caprini - modelParams.caprini_mean) / modelParams.caprini_std * modelParams.caprini_coef;
+            const tci_points = tci_cutoff * modelParams.tci_cutoff_coef;
+            const total_points = caprini_points + tci_points;
+            const probability = 1 / (1 + Math.exp(-(modelParams.intercept + total_points)));
+
+            let risk_level, risk_class, recommendation_text;
+            if (probability < 0.20) {
+                risk_level = i18n.riskLow[lang]; risk_class = 'risk-low'; recommendation_text = i18n.recLow[lang];
+            } else if (probability < 0.30) {
+                risk_level = i18n.riskMid[lang]; risk_class = 'risk-medium'; recommendation_text = i18n.recMid[lang];
+            } else {
+                risk_level = i18n.riskHigh[lang]; risk_class = 'risk-high'; recommendation_text = i18n.recHigh[lang];
+            }
+
+            document.getElementById('tci').textContent = tci.toFixed(2);
+            document.getElementById('tci_status').textContent = tci > modelParams.tci_threshold ?
+                `TCI > ${modelParams.tci_threshold.toFixed(2)} (${lang==='zh'?'高':'high'})` :
+                `TCI ≤ ${modelParams.tci_threshold.toFixed(2)} (${lang==='zh'?'低':'low'})`;
+            document.getElementById('caprini_points').textContent = caprini_points.toFixed(4);
+            document.getElementById('tci_points').textContent = tci_points.toFixed(4);
+            document.getElementById('total_points').textContent = total_points.toFixed(4);
+            document.getElementById('probability').textContent = `${(probability * 100).toFixed(2)}%`;
+
+            const rb = document.getElementById('risk_badge');
+            rb.textContent = risk_level; rb.className = 'risk-badge ' + risk_class;
+            document.getElementById('recommendation').textContent = recommendation_text;
+
+            // 公式：分行列出，HTML 渲染
+            const formulaHtml =
+                `<div class="formula-line">① TCI = TAT + TM = ${tat.toFixed(2)} + ${tm.toFixed(2)} = ${tci.toFixed(2)}</div>` +
+                `<div class="formula-line">② ${lang==='zh'?'TCI 状态':'TCI status'}: ${tci > modelParams.tci_threshold ? '>' : '≤'} ${modelParams.tci_threshold.toFixed(2)} → ${tci_cutoff}</div>` +
+                `<div class="formula-line">③ ${lang==='zh'?'Caprini 贡献值':'Caprini contribution'} = (${caprini} − ${modelParams.caprini_mean.toFixed(2)}) ÷ ${modelParams.caprini_std.toFixed(2)} × ${modelParams.caprini_coef.toFixed(4)} = ${caprini_points.toFixed(4)}</div>` +
+                `<div class="formula-line">④ ${lang==='zh'?'TCI 截断贡献值':'TCI contribution'} = ${tci_cutoff} × ${modelParams.tci_cutoff_coef.toFixed(4)} = ${tci_points.toFixed(4)}</div>` +
+                `<div class="formula-line">⑤ ${lang==='zh'?'总分':'Total'} = ${caprini_points.toFixed(4)} + ${tci_points.toFixed(4)} = ${total_points.toFixed(4)}</div>` +
+                `<div class="formula-line">⑥ ${lang==='zh'?'预测概率':'Predicted risk'} = 1 ÷ [1 + e^(${modelParams.intercept.toFixed(4)} + ${total_points.toFixed(4)})] = ${(probability*100).toFixed(2)}%</div>`;
+            document.getElementById('formula').innerHTML = formulaHtml;
+
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.addEventListener('keypress', function(e) { if (e.key === 'Enter') calculate(); });
+    </script>
 </body>
 </html>
