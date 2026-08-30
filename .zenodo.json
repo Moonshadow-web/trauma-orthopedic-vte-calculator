@@ -7,12 +7,37 @@
   "version": "1.0.0",
   "language": "eng",
   "creators": [
-    {"name": "Wang, Xuejing", "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"},
-    {"name": "Jin, Zizheng", "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"},
-    {"name": "Lv, Wenjuan", "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"},
-    {"name": "Qin, Dongfang", "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"},
-    {"name": "Kong, Yalong", "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"},
-    {"name": "Zhao, Huijun", "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"}
+    {
+      "name": "Jin, Zizheng",
+      "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"
+    },
+    {
+      "name": "Lv, Wenjuan",
+      "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"
+    },
+    {
+      "name": "Qin, Dongfang",
+      "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"
+    },
+    {
+      "name": "Kong, Yalong",
+      "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"
+    },
+    {
+      "name": "Zhao, Huijun",
+      "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"
+    },
+    {
+      "name": "Wang, Xuejing",
+      "affiliation": "Department of Clinical Laboratory, Civil Aviation General Hospital, Beijing, China"
+    }
   ],
-  "keywords": ["deep vein thrombosis", "thrombus coagulation index", "Caprini score", "prediction model", "temporal validation", "trauma orthopaedics"]
+  "keywords": [
+    "deep vein thrombosis",
+    "thrombus coagulation index",
+    "Caprini score",
+    "prediction model",
+    "temporal validation",
+    "trauma orthopaedics"
+  ]
 }
